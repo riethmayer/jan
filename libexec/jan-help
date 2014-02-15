@@ -7,7 +7,7 @@ print_summaries() {
   local longest_command=0
   local command
 
-  for command in $(sub-commands); do
+  for command in $(jan-commands); do
     local file="$(command_path "$command")"
     if [ ! -h "$file" ]; then
       local summary="$(summary "$file")"
@@ -47,7 +47,7 @@ print_help() {
 }
 
 command_path() {
-  command -v "sub-$command" || command -v "sub-sh-$command" || true
+  command -v "jan-$command" || command -v "jan-sh-$command" || true
 }
 
 summary() {
@@ -74,20 +74,20 @@ truncate() {
   fi
 }
 
-# Provide sub completions
+# Provide jan completions
 if [ "$1" = "--complete" ]; then
-  exec "sub-commands"
+  exec "jan-commands"
   exit
 fi
 
 command="$1"
 case "$command" in
-"") echo "Usage: sub <command> [<args>]
+"") echo "Usage: jan <command> [<args>]
 
-Some useful sub commands are:
+Some useful jan commands are:
 $(print_summaries)
 
-See 'sub help <command>' for information on a specific command."
+See 'jan help <command>' for information on a specific command."
 ;;
 *)
   file="$(command_path "$command")"
@@ -95,7 +95,7 @@ See 'sub help <command>' for information on a specific command."
   if [ -n "$file" ]; then
     print_help "$file"
   else
-    echo "sub: no such command \`$command'" >&2
+    echo "jan: no such command \`$command'" >&2
     exit 1
   fi
 esac
